@@ -17,8 +17,8 @@ contract vnt is  ERC20 {
     uint public _moneyInPool ;
     enum statusEnum { ICO, IDO, subIDO }
     
-    statusEnum public state = statusEnum.ICO;
-    uint public currentStep = 1;
+    statusEnum state = statusEnum.ICO;
+    uint currentStep = 1;
     uint subIDOSold = 0;
     uint constant sqrt2 = 14142135623730951 ;  //1.4142135623730951 = sqrt2/10^16
 
