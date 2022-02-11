@@ -13,8 +13,8 @@ contract vnt is  ERC20 {
     mapping(address => uint) balances;
     uint _initPrice = 10**17 ;  // 0.1 VUSD
     uint _releaseAmount = 10**6 * 10 **18; // 10^6 VNT  
-    uint public _tokenInPool ;
-    uint public _moneyInPool ;
+    uint  _tokenInPool ;
+    uint  _moneyInPool ;
     enum statusEnum { ICO, IDO, subIDO }
     
     statusEnum state = statusEnum.ICO;
