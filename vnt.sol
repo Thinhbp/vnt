@@ -13,8 +13,8 @@ contract vnt is  ERC20 {
     mapping(address => uint) balances;
     uint _initPrice = 10**17 ;  // 0.1 VUSD
     uint _releaseAmount = 10**6 * 10 **18; // 10^6 VNT  
-	uint public _tokenInPool ;
-	uint public _moneyInPool ;
+    uint public _tokenInPool ;
+    uint public _moneyInPool ;
     enum statusEnum { ICO, IDO, subIDO }
     
     statusEnum public state = statusEnum.ICO;
@@ -100,8 +100,8 @@ contract vnt is  ERC20 {
 
             buyNowToken = nextBreak >= assumingToken ? assumingToken : nextBreak;
             buyNowCost = amount;    
-		    if ( assumingToken>nextBreak ){
-			    buyNowCost = state == statusEnum.ICO ? buyNowToken*icoPrice() / 10**18 : (poolConstant()/(_tokenInPool - buyNowToken) - _moneyInPool);
+            if ( assumingToken>nextBreak ){
+	        buyNowCost = state == statusEnum.ICO ? buyNowToken*icoPrice() / 10**18 : (poolConstant()/(_tokenInPool - buyNowToken) - _moneyInPool);
             }
             _moneyInPool += buyNowCost;
             if (state == statusEnum.ICO) {
@@ -135,7 +135,7 @@ contract vnt is  ERC20 {
         require(amount > 0, "Please input amount greater than 0");
         require(IERC20(address(this)).allowance(msg.sender, address(this)) == amount,"You must approve in web3");
         require(IERC20(address(this)).transferFrom(msg.sender, address(this),amount), "Transfer failed");
-		uint currentMoney = _moneyInPool;
+	uint currentMoney = _moneyInPool;
         uint moneyInpool = poolConstant() / (_tokenInPool + amount);
         uint receivedMoney = currentMoney - moneyInpool ;
         _moneyInPool -= receivedMoney;
