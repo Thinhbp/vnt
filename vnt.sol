@@ -10,6 +10,10 @@ contract vnt is  ERC20 {
 
     address VUSD = 0x1bbb625A372A337bee53b29e12b7E3276CDbDb25;
 
+    bool status ; 
+    address owner = msg.sender;
+
+
     mapping(address => uint) balances;
     uint _initPrice = 10**17 ;  // 0.1 VUSD
     uint _releaseAmount = 10**6 * 10 **18; // 10^6 VNT  
@@ -21,6 +25,12 @@ contract vnt is  ERC20 {
     uint currentStep = 1;
     uint subIDOSold = 0;
     uint constant sqrt2 = 14142135623730951 ;  //1.4142135623730951 = sqrt2/10^16
+
+    event buy(address _address, uint _amount);
+    event sell(address _address, uint _amount);
+    event changestatues(bool _status);
+    event changeowner(address _address);
+
 
 
     function icoPrice() public view returns (uint){
@@ -129,13 +139,14 @@ contract vnt is  ERC20 {
 
             amount = amount - buyNowCost;
         }
+        emit buy(msg.sender, amount);
     }
 
     function sellToken(uint amount) public {
         require(amount > 0, "Please input amount greater than 0");
         require(IERC20(address(this)).allowance(msg.sender, address(this)) == amount,"You must approve in web3");
         require(IERC20(address(this)).transferFrom(msg.sender, address(this),amount), "Transfer failed");
-	uint currentMoney = _moneyInPool;
+	    uint currentMoney = _moneyInPool;
         uint moneyInpool = poolConstant() / (_tokenInPool + amount);
         uint receivedMoney = currentMoney - moneyInpool ;
         _moneyInPool -= receivedMoney;
@@ -148,27 +159,20 @@ contract vnt is  ERC20 {
         if (state == statusEnum.subIDO) {
             subIDOSold +=amount;
         }
+
+        emit sell(msg.sender, amount);
     }
+
+    function changeStatus(bool _status) public {
+        require(msg.sender == owner," You are not be allowed");
+        status = _status;
+        emit changestatues(_status);
+    }
+
+    function changeOwner(address _address) public {
+        require(msg.sender == owner," You are not be allowed");
+        require(_address != address(0), "Address is invalid");
+        owner = _address;
+        emit changeowner(_address);
+    } 
 }
-
-
-
- 
-
-
-        
-    
-
-
-
-
-             
-                
-
-
-       
-    
-
-
-    
-    
