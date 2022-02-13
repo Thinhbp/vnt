@@ -58,12 +58,12 @@ contract vnt is  ERC20 {
     }
 
     function moneyAfterICO(uint k) public view returns (uint) {
-        uint delta = k > 1 ? poolConstantAt(k-1) * sqrt2 * 10**16 : 0;
+        uint delta = k > 1 ? poolConstantAt(k-1) * sqrt2 * 10**16 \ tokenAfterICO(k-1): 0;
         return delta + _releaseAmount/2 * icoPriceAt(k);
     }
 
     function moneyIcanUse() public view returns (uint){
-        return IERC20(VUSD).balanceOf(address(this)) ;
+        return poolConstant()/totalSupply() ;
     }
 
     function poolConstantAt(uint k) public view returns(uint) {
@@ -84,6 +84,7 @@ contract vnt is  ERC20 {
 
 
     function buyToken(uint amount) public {
+    	require(status, "Contract is maintaining");
         require(amount > 0, "Please input amount greater than 0");
         require(IERC20(VUSD).allowance(msg.sender, address(this)) == amount,"You must approve in web3");
         require(IERC20(VUSD).transferFrom(msg.sender, address(this),amount), "Transfer failed");
@@ -143,6 +144,7 @@ contract vnt is  ERC20 {
     }
 
     function sellToken(uint amount) public {
+        require(status, "Contract is maintaining");
         require(amount > 0, "Please input amount greater than 0");
         require(IERC20(address(this)).allowance(msg.sender, address(this)) == amount,"You must approve in web3");
         require(IERC20(address(this)).transferFrom(msg.sender, address(this),amount), "Transfer failed");
